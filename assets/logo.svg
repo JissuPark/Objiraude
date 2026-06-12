@@ -1,0 +1,57 @@
+<svg width="256" height="256" viewBox="0 0 256 256" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Objiraude logo">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="256" y2="256" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#0F3B33"/>
+      <stop offset="1" stop-color="#06201C"/>
+    </linearGradient>
+    <radialGradient id="glow" cx="128" cy="128" r="118" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#2BD4A6" stop-opacity="0.40"/>
+      <stop offset="1" stop-color="#2BD4A6" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="sparkGlow" cx="128" cy="128" r="56" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#F0936B" stop-opacity="0.75"/>
+      <stop offset="1" stop-color="#F0936B" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="spark" cx="128" cy="124" r="40" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#FDD9C4"/>
+      <stop offset="1" stop-color="#D97757"/>
+    </radialGradient>
+  </defs>
+
+  <!-- background -->
+  <rect width="256" height="256" rx="58" fill="url(#bg)"/>
+  <circle cx="128" cy="128" r="118" fill="url(#glow)"/>
+
+  <!-- four green crystals: N / E / S / W (two facets each) -->
+  <!-- North -->
+  <polygon points="128,40 106,78 128,116" fill="#6EE7B7"/>
+  <polygon points="128,40 150,78 128,116" fill="#10B981"/>
+  <!-- East -->
+  <polygon points="216,128 178,106 140,128" fill="#34D399"/>
+  <polygon points="216,128 178,150 140,128" fill="#059669"/>
+  <!-- South -->
+  <polygon points="128,216 106,178 128,140" fill="#34D399"/>
+  <polygon points="128,216 150,178 128,140" fill="#059669"/>
+  <!-- West -->
+  <polygon points="40,128 78,106 116,128" fill="#6EE7B7"/>
+  <polygon points="40,128 78,150 116,128" fill="#10B981"/>
+
+  <!-- crystal outlines + ridge highlights -->
+  <g fill="none" stroke="#E8FFF6" stroke-linejoin="round">
+    <polygon points="128,40 150,78 128,116 106,78" stroke-opacity="0.55" stroke-width="1.6"/>
+    <polygon points="216,128 178,150 140,128 178,106" stroke-opacity="0.55" stroke-width="1.6"/>
+    <polygon points="128,216 150,178 128,140 106,178" stroke-opacity="0.55" stroke-width="1.6"/>
+    <polygon points="40,128 78,150 116,128 78,106" stroke-opacity="0.55" stroke-width="1.6"/>
+  </g>
+  <g stroke="#FFFFFF" stroke-opacity="0.28" stroke-width="1.4" stroke-linecap="round">
+    <line x1="128" y1="40" x2="128" y2="116"/>
+    <line x1="216" y1="128" x2="140" y2="128"/>
+    <line x1="128" y1="216" x2="128" y2="140"/>
+    <line x1="40" y1="128" x2="116" y2="128"/>
+  </g>
+
+  <!-- Claude coral sparkle — dead center -->
+  <circle cx="128" cy="128" r="48" fill="url(#sparkGlow)"/>
+  <path d="M128 92 C132 119, 137 124, 164 128 C137 132, 132 137, 128 164 C124 137, 119 132, 92 128 C119 124, 124 119, 128 92 Z" fill="url(#spark)"/>
+  <circle cx="128" cy="128" r="4.2" fill="#FFF4EC"/>
+</svg>

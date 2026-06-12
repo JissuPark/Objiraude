@@ -1,0 +1,6 @@
+.DS_Store
+*.zip
+# Obsidian local UI state (if you open vault-template/ in Obsidian)
+.obsidian/workspace.json
+.obsidian/workspace-mobile.json
+.obsidian/cache
