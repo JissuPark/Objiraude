@@ -60,7 +60,7 @@ cp -r claude/vault/skills/*    ~/path/to/my-worklog/.claude/skills/
 
 Then replace placeholders in the copied skills:
 
-- **Global skills** (`~/.claude/skills/daily-log/SKILL.md`, `jira-subtask/SKILL.md`): set `<VAULT_PATH>` to your vault's absolute path, plus `<PROJECT_KEY>`, `<ATLASSIAN_CLOUD_ID>`, `<YOUR_ATLASSIAN_ACCOUNT_ID>`.
+- **Global skills** (`~/.claude/skills/daily-log/SKILL.md`, `jira-subtask/SKILL.md`, `todo/SKILL.md`): set `<VAULT_PATH>` to your vault's absolute path, plus `<PROJECT_KEY>`, `<ATLASSIAN_CLOUD_ID>`, `<YOUR_ATLASSIAN_ACCOUNT_ID>`.
 - **Vault skills** (`jira-sync`, `sync-report`, `daily-plan`): set `<PROJECT_KEY>`, `<ATLASSIAN_CLOUD_ID>`, the Confluence spaces.
 
 > Tip: a single find-and-replace across the copied files for each placeholder is fastest.

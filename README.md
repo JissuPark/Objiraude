@@ -39,22 +39,24 @@ Epic        (months, shared)       → frontmatter jira-epic, no doc
 Non-project ad-hoc (one-off/ops)   → [misc] tag + projects/misc.md
 ```
 
-## The pipeline — 5 Claude Code commands
+## The pipeline — 6 Claude Code commands
 
 | Command | Runs in | What it does | Writes |
 |---|---|---|---|
 | `/plan` | vault | Draft today's tasks from your open Jira, expanded **by subtask** | daily |
+| `/todo` | anywhere | Capture an ad-hoc open line — no Jira, no key | daily |
 | `/subtask` | anywhere | Create a Jira subtask + add its daily line | Jira + daily |
 | `/log` | anywhere | Record finished work (auto-routed by the git branch's issue key) | daily |
 | `/report` | vault | Roll up task progress; **propose** Jira status / Confluence | daily (+ proposes) |
 | `/jira-sync` | vault | Post the daily's completed blocks to Jira issues as comments | Jira |
 
-`/log` and `/subtask` are **global** — run them from any source-code repo. They read the current git branch (e.g. `feature/PROJ-13-...`), extract the issue key, and write back to the vault. `/plan`, `/report`, `/jira-sync` live in the vault (they need the whole vault + Jira access).
+`/log`, `/subtask`, and `/todo` are **global** — run them from any source-code repo. `/log` and `/subtask` read the current git branch (e.g. `feature/PROJ-13-...`), extract the issue key, and write back to the vault; `/todo` just appends an open line (branch key used only if present). `/plan`, `/report`, `/jira-sync` live in the vault (they need the whole vault + Jira access).
 
 ## A day with Objiraude
 
 ```
 morning   /plan                          → today's daily filled from your open Jira
+anytime   /todo "ping infra re: quota"   → open [misc] line, no Jira — jot before you forget
 in repo   /subtask PROJ-11 "migrate db"  → new Jira subtask + a daily line
 in repo   /log "cut over done, MR !42"   → checkbox ticked; branch PROJ-12 auto-routed
 EOD       /report                        → task docs rolled up; status & comments proposed
@@ -95,8 +97,8 @@ Objiraude/
 │   └── commands.md       # per-command reference
 ├── claude/
 │   ├── global/           # → copy to ~/.claude/   (run from anywhere)
-│   │   ├── commands/      #   log.md, subtask.md
-│   │   └── skills/        #   daily-log/, jira-subtask/
+│   │   ├── commands/      #   log.md, subtask.md, todo.md
+│   │   └── skills/        #   daily-log/, jira-subtask/, todo/
 │   └── vault/            # → copy to <vault>/.claude/  (run in the vault)
 │       ├── commands/      #   plan.md, report.md, jira-sync.md
 │       └── skills/        #   daily-plan/, sync-report/, jira-sync/

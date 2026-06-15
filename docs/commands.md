@@ -18,6 +18,21 @@ Pulls your open Jira tasks (`assignee = currentUser() AND statusCategory != Done
 
 ---
 
+## `/todo` — capture an open line  ·  *Global*
+
+Appends a single open `- [ ]` line to today's daily — a quick capture for something that needs recording but isn't worth a Jira subtask. The keyless sibling of `/subtask`, and the open counterpart of `/log`. **No Jira write, no key created.**
+
+```
+/todo "ping infra about the quota bump"            # → [misc], no key
+/todo [migrate-db] "double-check the rollback path"
+/todo "follow up on the review" (PROJ-1234)        # attach a related key by hand
+```
+
+- Tag routing: an explicit `[tag]` wins; else the git branch's key → its tag; else a keyword match; else `[misc]`. When unclear it stays `[misc]` rather than prompting — capture should be frictionless.
+- A single line, **no child block** (nothing's been done yet). Complete it later with `/log`; promote it to a tracked ticket with `/subtask`.
+
+---
+
 ## `/subtask` — create a subtask  ·  *Global*
 
 Creates a Jira subtask under a parent task and adds its line to today's daily. The counterpart of `/log` (adding *planned* work). No need to re-run `/plan`.
@@ -82,7 +97,7 @@ Posts the daily's completed blocks to their Jira issues as **comments**. Idempot
 
 | | Global (`~/.claude/`) | Vault (`<vault>/.claude/`) |
 |---|---|---|
-| Commands | `log`, `subtask` | `plan`, `report`, `jira-sync` |
+| Commands | `log`, `subtask`, `todo` | `plan`, `report`, `jira-sync` |
 | Why | route by git branch, run from any repo | need the whole vault + Jira |
 
 ## What writes where
@@ -90,6 +105,7 @@ Posts the daily's completed blocks to their Jira issues as **comments**. Idempot
 | Command | Vault | Jira | Confluence |
 |---|---|---|---|
 | `/plan` | ✍ daily | read | — |
+| `/todo` | ✍ daily | — | — |
 | `/subtask` | ✍ daily | ✍ create (confirm) | — |
 | `/log` | ✍ daily | — | — |
 | `/report` | ✍ project docs | propose status (confirm) | propose (confirm) |

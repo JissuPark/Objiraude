@@ -82,6 +82,7 @@ Jira ──▶ │ /plan   │     │ /subtask │     │ /log   │     │ /
 ```
 
 - **`/plan`** pulls your open Jira tasks and expands each into its open subtasks, one daily line each.
+- **`/todo`** drops a single open line into the daily for a quick capture that isn't worth a Jira subtask — local only, no key. (`/log` later completes it; `/subtask` promotes it if it grows into tracked work.)
 - **`/subtask`** creates a new Jira subtask and drops its line into the daily — without re-running `/plan`.
 - **`/log`** ticks off finished work. Run from a code repo, it reads the git branch's issue key to know which line to complete, and writes a summary block (never the code).
 - **`/report`** compresses the day's blocks into each task doc's `## Progress`, and **proposes** Jira status transitions and Confluence drafts.
