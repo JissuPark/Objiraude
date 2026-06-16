@@ -16,7 +16,8 @@
 8. Non-Jira ad-hoc work is not auto-generated — add it manually as a `[misc]` line (collected by `projects/misc.md`).
 
 ## Format / constraints
-- Every line is flat: `- [ ] [task] content (KEY)`. No nested indentation — a child line without `[task]` won't be collected by the project doc.
+- Every checkbox line **must carry `[task]`+`(KEY)`** (this is the project-doc query's collection condition — collected regardless of indentation).
+- **Hierarchy**: when a subtask line and its parent task line are both in the same daily, indent the subtask line **one level (tab) under the parent**. Each child line still keeps `[task]`+`(KEY)` (collection guaranteed). If only the subtask line is present (no parent line), keep it flat.
 - `(KEY)` priority: subtask key > (else) task key. The project-doc timeline groups by this key.
 
 ## Safety

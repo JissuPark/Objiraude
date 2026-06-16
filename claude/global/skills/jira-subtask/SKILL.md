@@ -15,6 +15,7 @@
 3. **Confirm (required, Jira write)**: "Create subtask 'summary' under <PROJECT_KEY>-parent(title) + add `- [ ] [tag] summary (NEW-KEY)` to today's daily — proceed?"
 4. **Create in Jira**: `createJiraIssue`(projectKey=<PROJECT_KEY>, issueTypeName="Sub-task", parent=parentKey, summary=summary, assignee=me) → get the new key. On failure (e.g. required fields) report the error verbatim and stop.
 5. **Reflect in Obsidian**: add `- [ ] [tag] summary (NEW-KEY)` to today's `daily/YYYY-MM-DD.md` (create from template if missing). Open (`[ ]`), assigned to me so the next `/plan` picks it up.
+   - **Hierarchical placement**: if the parent task line (`[tag] ... (PARENT-KEY)`) is already in today's `## Tasks`, insert the new line **indented one level (tab) right under it** (so it reads as a child). Otherwise append flat at the end. The child line still keeps `[tag]`+`(NEW-KEY)` (collection condition).
 6. Report the new key + the daily change. If a fallback task-level line for the parent exists in today's daily, offer once to remove it (now superseded by the subtask).
 
 ## Safety
