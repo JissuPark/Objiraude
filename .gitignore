@@ -1,5 +1,7 @@
 .DS_Store
 *.zip
+# Local install config holds private ids/keys — never commit it.
+install.config.json
 # Obsidian local UI state (if you open vault-template/ in Obsidian)
 .obsidian/workspace.json
 .obsidian/workspace-mobile.json

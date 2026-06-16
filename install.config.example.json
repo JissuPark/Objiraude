@@ -1,0 +1,10 @@
+{
+  "VAULT_PATH": "C:\\Users\\you\\path\\to\\my-worklog",
+  "PROJECT_KEY": "PROJ",
+  "ATLASSIAN_SITE": "yourco.atlassian.net",
+  "ATLASSIAN_CLOUD_ID": "00000000-0000-0000-0000-000000000000",
+  "YOUR_ATLASSIAN_ACCOUNT_ID": "000000:00000000-0000-0000-0000-000000000000",
+  "SUBTASK_TYPE": "Sub-task",
+  "CONFLUENCE_PERSONAL_SPACE": "~yourpersonalspacekey",
+  "CONFLUENCE_TEAM_SPACE": "TEAM"
+}

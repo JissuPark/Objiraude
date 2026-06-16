@@ -41,6 +41,7 @@ Edit **`CLAUDE.md`** in the vault and replace every `<PLACEHOLDER>`:
 | `<YOUR_ATLASSIAN_ACCOUNT_ID>` | ask Claude for your account id via the MCP |
 | `<CONFLUENCE_PERSONAL_SPACE>` | your personal/draft Confluence space key |
 | `<CONFLUENCE_TEAM_SPACE>` | your team's published space key |
+| `<SUBTASK_TYPE>` | your Jira project's subtask issue-type name (e.g. `Sub-task`, or a localized name) |
 
 Also replace `<PROJECT_KEY>` in the timeline queries inside `projects/_template.md` and `projects/misc.md` (the regex `/<PROJECT_KEY>-\d+/`).
 
@@ -60,10 +61,26 @@ cp -r claude/vault/skills/*    ~/path/to/my-worklog/.claude/skills/
 
 Then replace placeholders in the copied skills:
 
-- **Global skills** (`~/.claude/skills/daily-log/SKILL.md`, `jira-subtask/SKILL.md`, `todo/SKILL.md`): set `<VAULT_PATH>` to your vault's absolute path, plus `<PROJECT_KEY>`, `<ATLASSIAN_CLOUD_ID>`, `<YOUR_ATLASSIAN_ACCOUNT_ID>`.
+- **Global skills** (`~/.claude/skills/daily-log/SKILL.md`, `jira-subtask/SKILL.md`, `todo/SKILL.md`): set `<VAULT_PATH>` to your vault's absolute path, plus `<PROJECT_KEY>`, `<ATLASSIAN_CLOUD_ID>`, `<YOUR_ATLASSIAN_ACCOUNT_ID>`, `<SUBTASK_TYPE>`.
 - **Vault skills** (`jira-sync`, `sync-report`, `daily-plan`): set `<PROJECT_KEY>`, `<ATLASSIAN_CLOUD_ID>`, the Confluence spaces.
 
 > Tip: a single find-and-replace across the copied files for each placeholder is fastest.
+
+### Windows (PowerShell): scripted install
+
+`install.ps1` does the copy + placeholder substitution for you — handy when you run Claude Code natively on Windows in addition to WSL/macOS. It installs the **global** commands/skills into `%USERPROFILE%\.claude\` (the vault-level ones already travel with the vault repo).
+
+```powershell
+# one-time: create your local config from the example and fill in real values
+Copy-Item install.config.example.json install.config.json
+notepad install.config.json           # set VAULT_PATH, PROJECT_KEY, cloud id, account id, subtask type…
+
+# install / update (run again any time after `git pull`)
+git pull
+./install.ps1
+```
+
+`install.config.json` holds your private values and is git-ignored — never commit it. It's JSON (read as UTF-8) so a localized `SUBTASK_TYPE` such as `하위 작업` survives intact.
 
 ## 5. Connect the vault to GitHub
 
