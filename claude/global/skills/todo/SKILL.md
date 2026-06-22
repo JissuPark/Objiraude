@@ -4,10 +4,11 @@
 
 ## Vault / env
 - `VAULT = <VAULT_PATH>`  (absolute path to your Obsidian vault)
-- Today's file = `$VAULT/daily/YYYY-MM-DD.md` (create from `$VAULT/daily/_template.md` if missing).
+- Today's file = `$VAULT/daily/<today>.md` (create from `$VAULT/daily/_template.md` if missing).
 
 ## Behavior
-1. Append `- [ ] [tag] <summary> (key?)` to today's `## Tasks`. No completion emoji (`⏰`/`✅`) — leave it open.
+0. **Pin today's date from the system**: always run `date +%F` to get `<today>`. **Even if a daily for another date is open in the conversation context, do not write to that file** — the file a previous `/log`/`/plan`/`/report` touched may not be today's. The target is decided solely by the `date +%F` result. If that file doesn't exist, create it from `_template.md` and set frontmatter `date` to today.
+1. Append `- [ ] [tag] <summary> (key?)` to that **today file**'s `## Tasks`. No completion emoji (`⏰`/`✅`) — leave it open.
    - **Hierarchical placement**: if the summary belongs under an existing line in today's `## Tasks` (same work title / parent item), insert it **indented one level (tab) right under that line** (so it reads as a child). If there's no clear parent, append flat at the end. The child line still keeps `[tag]` (collection condition).
 2. **Tag routing** (keep it frictionless — when unclear, don't ask, use `[misc]`):
    - If `$ARGUMENTS` carries an explicit `[tag]`, use it.
@@ -22,6 +23,7 @@
 - Promotion: when it later needs tracking, promote the line with `/subtask` (creates the Jira issue + injects the key); finish it with `/log`.
 
 ## Safety
+- **Target file = the single today file from `date +%F`.** Never write to yesterday's or another date's daily that's visible in context (a common mistake — don't reuse the file the previous command touched).
 - **Local only** — no Jira/external write, no confirmation needed (it's one vault line).
 - The vault may be outside the cwd → write by absolute path; grant permission on first run.
 - Summaries & links only (never source code).
