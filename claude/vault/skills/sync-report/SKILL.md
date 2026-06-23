@@ -13,9 +13,11 @@
    - Don't overwrite. If a bullet with the same `{date}+(key)` exists, update only that line (no duplicate). Remove the placeholder (`(updated by /report)`) on the first real entry.
    - Timeline / open-tasks are handled by queries → don't touch them.
 3. **Keyless line check**: gather completed lines without `(KEY)`, ask once "fill the key?" (prerequisite for rollup / Jira linking).
-4. **Jira status sync (propose then run, project=<PROJECT_KEY>)**:
-   - Propose transitioning `[x]`-done **subtask keys → Done** in Jira.
+4. **Jira status sync (propose then run, project=<PROJECT_KEY>)** — follow the project's defined status workflow:
+   - A project may have a multi-step workflow (e.g. In Progress → Test → Deploy → Closed) with its own state and transition names. **If you don't know this project's workflow, ask the user for it — or propose a status mapping and confirm — before transitioning.**
+   - Pick the target state by the **nature** of the completed line: a `[x]`-done line is **not** automatically a terminal "Done"/Closed state. "work finished but not shipped" vs. "actually deployed" vs. "fully closed" are different states; don't jump straight to a terminal state if the workflow requires passing through intermediate ones.
    - When all of a task's subtasks are done, propose **transitioning the parent task**.
+   - Transition IDs vary by source status → always fetch them with `getTransitionsForJiraIssue` and select by name. Multi-step → confirm each step.
    - Status transitions only here. Comments/worklogs → step 5.
 5. **Hand off Jira comments**: list the blocks worth posting (completed + has narrative/links) and suggest "post via `/jira-sync`?". Actual posting / image attach is `/jira-sync`'s job.
 6. **Confluence (confirm)**: draft → personal space `<CONFLUENCE_PERSONAL_SPACE>`, finished → team space `<CONFLUENCE_TEAM_SPACE>` (show what goes where, confirm). `week` → an epic-grouped weekly report.
