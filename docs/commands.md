@@ -93,11 +93,27 @@ Posts the daily's completed blocks to their Jira issues as **comments**. Idempot
 
 ---
 
+## `/wrapup` — unattended end-of-day close-out  ·  *Vault*
+
+Runs the whole evening routine hands-free: collects the day's Claude sessions across your repos, backfills missed `/log` lines, rolls up task docs, writes a **pending-publish list** (instead of publishing), drafts the next working day's plan, then commits & pushes the vault. Built to be invoked by a local routine — e.g. a Claude Desktop Scheduled Task every evening.
+
+```
+/wrapup               # close out the last working day
+/wrapup 2026-06-12    # close out a specific day
+```
+
+- **No external writes** — Jira is read-only; comments / status transitions / Confluence go into a `### Pending publishes (wrapup)` block in the daily's `## Notes`, for you to review next morning via `/jira-sync` and `/report`.
+- Backfill and rollup are idempotent; anything ambiguous is parked as "needs review" rather than guessed (a miss beats a wrong record).
+- If the vault is a git repo, it auto-commits & pushes at the end — skipped when nothing changed, secret-pattern guard before pushing, a failed push is reported (never forced).
+- A morning run naturally becomes a catch-up: close out yesterday + plan today.
+
+---
+
 ## Placement cheat-sheet
 
 | | Global (`~/.claude/`) | Vault (`<vault>/.claude/`) |
 |---|---|---|
-| Commands | `log`, `subtask`, `todo` | `plan`, `report`, `jira-sync` |
+| Commands | `log`, `subtask`, `todo` | `plan`, `report`, `jira-sync`, `wrapup` |
 | Why | route by git branch, run from any repo | need the whole vault + Jira |
 
 ## What writes where
@@ -110,3 +126,4 @@ Posts the daily's completed blocks to their Jira issues as **comments**. Idempot
 | `/log` | ✍ daily | — | — |
 | `/report` | ✍ project docs | propose status (confirm) | propose (confirm) |
 | `/jira-sync` | ✍ marker | ✍ comments (confirm) | — |
+| `/wrapup` | ✍ daily + project docs (+ git push) | read | — |

@@ -39,7 +39,7 @@ Epic        (months, shared)       → frontmatter jira-epic, no doc
 Non-project ad-hoc (one-off/ops)   → [misc] tag + projects/misc.md
 ```
 
-## The pipeline — 6 Claude Code commands
+## The pipeline — 7 Claude Code commands
 
 | Command | Runs in | What it does | Writes |
 |---|---|---|---|
@@ -49,8 +49,9 @@ Non-project ad-hoc (one-off/ops)   → [misc] tag + projects/misc.md
 | `/log` | anywhere | Record finished work (auto-routed by the git branch's issue key) | daily |
 | `/report` | vault | Roll up task progress; **propose** Jira status / Confluence | daily (+ proposes) |
 | `/jira-sync` | vault | Post the daily's completed blocks to Jira issues as comments | Jira |
+| `/wrapup` | vault | Unattended end-of-day close-out: backfill logs from the day's sessions, roll up, queue publishes, draft tomorrow's plan | daily + task docs |
 
-`/log`, `/subtask`, and `/todo` are **global** — run them from any source-code repo. `/log` and `/subtask` read the current git branch (e.g. `feature/PROJ-13-...`), extract the issue key, and write back to the vault; `/todo` just appends an open line (branch key used only if present). `/plan`, `/report`, `/jira-sync` live in the vault (they need the whole vault + Jira access).
+`/log`, `/subtask`, and `/todo` are **global** — run them from any source-code repo. `/log` and `/subtask` read the current git branch (e.g. `feature/PROJ-13-...`), extract the issue key, and write back to the vault; `/todo` just appends an open line (branch key used only if present). `/plan`, `/report`, `/jira-sync`, and `/wrapup` live in the vault (they need the whole vault + Jira access).
 
 ## A day with Objiraude
 
@@ -61,6 +62,8 @@ in repo   /subtask PROJ-11 "migrate db"  → new Jira subtask + a daily line
 in repo   /log "cut over done, MR !42"   → checkbox ticked; branch PROJ-12 auto-routed
 EOD       /report                        → task docs rolled up; status & comments proposed
           /jira-sync                      → comments posted to each issue (after preview)
+evening   /wrapup                        → unattended close-out — hook it to a local routine
+                                           (e.g. a Claude Desktop Scheduled Task)
 ```
 
 ## Quick start
@@ -100,8 +103,8 @@ Objiraude/
 │   │   ├── commands/      #   log.md, subtask.md, todo.md
 │   │   └── skills/        #   daily-log/, jira-subtask/, todo/
 │   └── vault/            # → copy to <vault>/.claude/  (run in the vault)
-│       ├── commands/      #   plan.md, report.md, jira-sync.md
-│       └── skills/        #   daily-plan/, sync-report/, jira-sync/
+│       ├── commands/      #   plan.md, report.md, jira-sync.md, wrapup.md
+│       └── skills/        #   daily-plan/, sync-report/, jira-sync/, wrapup/
 └── vault-template/        # → copy into a new Obsidian vault
     ├── CLAUDE.md          #   vault rules + your config
     ├── daily/_template.md

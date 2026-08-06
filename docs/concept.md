@@ -87,6 +87,7 @@ Jira ──▶ │ /plan   │     │ /subtask │     │ /log   │     │ /
 - **`/log`** ticks off finished work. Run from a code repo, it reads the git branch's issue key to know which line to complete, and writes a summary block (never the code).
 - **`/report`** compresses the day's blocks into each task doc's `## Progress`, and **proposes** Jira status transitions and Confluence drafts.
 - **`/jira-sync`** takes the completed blocks and posts them to their Jira issues as comments (after a preview), marking each line so it's never double-posted.
+- **`/wrapup`** chains the evening unattended: backfills `/log` lines from the day's Claude sessions, rolls up task docs, queues the Jira/Confluence publishes as a review list (never posting), and drafts the next day's plan — so a local scheduled routine can close your day for you.
 
 ## Why split `/report` and `/jira-sync`
 

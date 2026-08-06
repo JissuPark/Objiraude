@@ -62,7 +62,7 @@ cp -r claude/vault/skills/*    ~/path/to/my-worklog/.claude/skills/
 Then replace placeholders in the copied skills:
 
 - **Global skills** (`~/.claude/skills/daily-log/SKILL.md`, `jira-subtask/SKILL.md`, `todo/SKILL.md`): set `<VAULT_PATH>` to your vault's absolute path, plus `<PROJECT_KEY>`, `<ATLASSIAN_CLOUD_ID>`, `<YOUR_ATLASSIAN_ACCOUNT_ID>`, `<SUBTASK_TYPE>`.
-- **Vault skills** (`jira-sync`, `sync-report`, `daily-plan`): set `<PROJECT_KEY>`, `<ATLASSIAN_CLOUD_ID>`, the Confluence spaces.
+- **Vault skills** (`jira-sync`, `sync-report`, `daily-plan`, `wrapup`): set `<PROJECT_KEY>`, `<ATLASSIAN_CLOUD_ID>`, the Confluence spaces.
 
 > Tip: a single find-and-replace across the copied files for each placeholder is fastest.
 
@@ -112,6 +112,7 @@ It creates today's daily from your open Jira and lists subtasks to do. From ther
 - finished something in a code repo → `/log "what you did"`
 - need a new subtask → `/subtask <PARENT-KEY> "summary"`
 - end of day → `/report`, then `/jira-sync`
+- hands-free close-out → `/wrapup` (works well as a local evening routine, e.g. a Claude Desktop Scheduled Task)
 
 See **[commands.md](commands.md)** for the full reference.
 
