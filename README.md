@@ -53,6 +53,19 @@ Non-project ad-hoc (one-off/ops)   → [misc] tag + projects/misc.md
 
 `/log`, `/subtask`, and `/todo` are **global** — run them from any source-code repo. `/log` and `/subtask` read the current git branch (e.g. `feature/PROJ-13-...`), extract the issue key, and write back to the vault; `/todo` just appends an open line (branch key used only if present). `/plan`, `/report`, `/jira-sync`, and `/wrapup` live in the vault (they need the whole vault + Jira access).
 
+## Beyond the daily loop — 4 more
+
+The seven above are the write-once pipeline. These four hang off it: three publish-shaped skills and the monthly counterpart of `/wrapup`.
+
+| Command | Runs in | What it does | Writes |
+|---|---|---|---|
+| `/doc` | anywhere | Distill the current conversation into a typed Confluence draft — and update it next time | Confluence draft (confirm) |
+| `/runbook` | anywhere | Turn the build/deploy you just did into a reproducible handover runbook | Confluence draft + daily |
+| `/data-request` | anywhere | Take an incoming data request from ticket to closed, analysis delegated to an agent | Jira + daily |
+| `/month` | vault | Close out a month: tally, then audit the debt a daily view can't show | retro doc |
+
+`/runbook` and `/data-request` ship as **skills with no command file** — invoke them by name. Everything that leaves for Jira or Confluence is previewed and confirmed first.
+
 ## A day with Objiraude
 
 ```
@@ -88,6 +101,11 @@ evening   /wrapup                        → unattended close-out — hook it to
 | `<YOUR_ATLASSIAN_ACCOUNT_ID>` | your account id (subtask assignee) | jira-subtask, CLAUDE.md |
 | `<CONFLUENCE_PERSONAL_SPACE>` | draft space key | sync-report, CLAUDE.md |
 | `<CONFLUENCE_TEAM_SPACE>` | published space key | sync-report, CLAUDE.md |
+| `<SUPPORT_EPIC>` | your team's standing support/intake epic key | data-request |
+| `<TASK_TYPE>` | issue type used under an epic, e.g. `Task` | data-request |
+| `<TEAM_FIELD_ID>` | Jira Team field id, e.g. `customfield_10001` | data-request |
+| `<TEAM_ID>` | your team's value for that field | data-request |
+| `<START_DATE_FIELD_ID>` | start-date field id, e.g. `customfield_10015` | data-request |
 
 ## Repo layout
 
@@ -100,11 +118,13 @@ Objiraude/
 │   └── commands.md       # per-command reference
 ├── claude/
 │   ├── global/           # → copy to ~/.claude/   (run from anywhere)
-│   │   ├── commands/      #   log.md, subtask.md, todo.md
-│   │   └── skills/        #   daily-log/, jira-subtask/, todo/
+│   │   ├── commands/      #   log.md, subtask.md, todo.md, doc.md
+│   │   └── skills/        #   daily-log/, jira-subtask/, todo/, confluence-draft/,
+│   │                      #   runbook/, data-request/
 │   └── vault/            # → copy to <vault>/.claude/  (run in the vault)
-│       ├── commands/      #   plan.md, report.md, jira-sync.md, wrapup.md
-│       └── skills/        #   daily-plan/, sync-report/, jira-sync/, wrapup/
+│       ├── commands/      #   plan.md, report.md, jira-sync.md, wrapup.md, month.md
+│       └── skills/        #   daily-plan/, sync-report/, jira-sync/, wrapup/,
+│                          #   monthly-wrapup/
 └── vault-template/        # → copy into a new Obsidian vault
     ├── CLAUDE.md          #   vault rules + your config
     ├── daily/_template.md

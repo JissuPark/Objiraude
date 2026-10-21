@@ -1,6 +1,6 @@
 # Commands reference
 
-Each command is a thin `.md` in `commands/` that invokes a skill (`SKILL.md`). "Global" = installed in `~/.claude/` (run anywhere); "Vault" = installed in `<vault>/.claude/` (run in the vault).
+Each command is a thin `.md` in `commands/` that invokes a skill (`SKILL.md`). "Global" = installed in `~/.claude/` (run anywhere); "Vault" = installed in `<vault>/.claude/` (run in the vault). Two entries (`/runbook`, `/data-request`) ship as skills with no command file — invoke them by name.
 
 ---
 
@@ -109,11 +109,71 @@ Runs the whole evening routine hands-free: collects the day's Claude sessions ac
 
 ---
 
+## `/doc` — conversation → Confluence draft  ·  *Global*
+
+Reads the current conversation, distills it into a typed draft in your **personal** Confluence space, and updates that same page the next time you call it on the same topic. A registry (`confluence/index.md`) maps topic → page id.
+
+```
+/doc design "chapter-split API"
+/doc worklog "cutover"
+```
+
+- Body types (`plan`, `criteria`, `design`) merge into the page body and add a changelog line; thread types (`worklog`, `discussion`) keep the body and append the round as a footer comment. Anything else is free form.
+- **Preview → confirm → publish**, personal space only. Promotion to the team space is `/report`'s proposal.
+- After saving it tells you `/compact` is now safe — that's the point: capture the conversation once, then drop it.
+
+---
+
+## `/runbook` — handover runbook  ·  *Global (skill only)*
+
+Turns the build·config·deploy work done in this session into a document someone else can use to **produce the same result again**: environment, the commands actually run, where to check, how to roll back, why each decision was made. Where `/doc guide` is "how to read it", a runbook is "how it was built".
+
+```
+/runbook "Grafana for the GPU hosts"
+```
+
+- 11 fixed sections → Confluence draft in the personal space, one registry line, one daily line.
+- **Only commands that actually ran** (anything abandoned goes under "Tried and rejected"); secrets and production IPs become placeholders; an empty section says "N/A" instead of being padded with guesses.
+- Invoked by skill name — there is no `commands/runbook.md`.
+
+---
+
+## `/data-request` — intake → ticket → analysis → close  ·  *Global (skill only)*
+
+Handles one incoming data request from another team end to end: open an issue under the standing support epic with the request quoted verbatim, move it to In Progress, run the analysis in a background agent, and — after you review the numbers — write the result into the issue and close it.
+
+```
+/data-request "could we get last month's signups by channel?"
+```
+
+- Creating the issue and the In Progress transition are covered by the call itself. **Recording the result and closing happen only after your review.**
+- The agent is read-only, returns aggregates (never a list of individuals), a reproducible SQL file and a draft reply. The reply is never sent for you.
+- Transitions are chosen by reading the live transition list at each step (`to.name`), never by guessing a transition's name.
+- Needs five extra config values — see [setup](setup.md#4-install-the-commands--skills). Invoked by skill name; there is no `commands/data-request.md`.
+
+---
+
+## `/month` — close out a month  ·  *Vault*
+
+Not a bigger `/wrapup`. It looks only at what a single day can't show: lines that have been open for weeks, publish and rollup holes, misjudgements that keep repeating. Writes `projects/retro-YYYY-MM.md`.
+
+```
+/month            # last month (or this month, mid-month, marked partial)
+/month 2026-09
+```
+
+- Tally on four axes (project · subtask · activity type · ISO week) + a cross table. A line matching no activity type is **asked about, never guessed** — inventing a number is this command's worst failure.
+- Long-open lines are counted from the **next month's first daily**: the month's own last daily is always empty, because `move-on-plan` has already moved the open leaves out of it.
+- Audit only — holes are written down and handed to `/jira-sync` and `/report`, not fixed. Unattended (no external writes) and idempotent; a re-run preserves the hand-written section.
+
+---
+
 ## Placement cheat-sheet
 
 | | Global (`~/.claude/`) | Vault (`<vault>/.claude/`) |
 |---|---|---|
-| Commands | `log`, `subtask`, `todo` | `plan`, `report`, `jira-sync`, `wrapup` |
+| Commands | `log`, `subtask`, `todo`, `doc` | `plan`, `report`, `jira-sync`, `wrapup`, `month` |
+| Skills, no command | `runbook`, `data-request` | — |
 | Why | route by git branch, run from any repo | need the whole vault + Jira |
 
 ## What writes where
@@ -127,3 +187,7 @@ Runs the whole evening routine hands-free: collects the day's Claude sessions ac
 | `/report` | ✍ project docs | propose status (confirm) | propose (confirm) |
 | `/jira-sync` | ✍ marker | ✍ comments (confirm) | — |
 | `/wrapup` | ✍ daily + project docs (+ git push) | read | — |
+| `/doc` | ✍ registry | — | ✍ draft (confirm) |
+| `/runbook` | ✍ daily + registry | — | ✍ draft (confirm) |
+| `/data-request` | ✍ daily | ✍ create + close (close confirmed) | — |
+| `/month` | ✍ retro doc (+ git push) | read | — |

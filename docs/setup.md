@@ -61,8 +61,9 @@ cp -r claude/vault/skills/*    ~/path/to/my-worklog/.claude/skills/
 
 Then replace placeholders in the copied skills:
 
-- **Global skills** (`~/.claude/skills/daily-log/SKILL.md`, `jira-subtask/SKILL.md`, `todo/SKILL.md`): set `<VAULT_PATH>` to your vault's absolute path, plus `<PROJECT_KEY>`, `<ATLASSIAN_CLOUD_ID>`, `<YOUR_ATLASSIAN_ACCOUNT_ID>`, `<SUBTASK_TYPE>`.
-- **Vault skills** (`jira-sync`, `sync-report`, `daily-plan`, `wrapup`): set `<PROJECT_KEY>`, `<ATLASSIAN_CLOUD_ID>`, the Confluence spaces.
+- **Global skills** (`~/.claude/skills/daily-log/`, `jira-subtask/`, `todo/`, `confluence-draft/`, `runbook/`, `data-request/`): set `<VAULT_PATH>` to your vault's absolute path, plus `<PROJECT_KEY>`, `<ATLASSIAN_CLOUD_ID>`, `<YOUR_ATLASSIAN_ACCOUNT_ID>`, `<SUBTASK_TYPE>` and the Confluence spaces.
+- **Vault skills** (`jira-sync`, `sync-report`, `daily-plan`, `wrapup`, `monthly-wrapup`): set `<PROJECT_KEY>`, `<ATLASSIAN_CLOUD_ID>`, the Confluence spaces.
+- **`data-request` needs five more**: `<SUPPORT_EPIC>` (your team's standing support epic), `<TASK_TYPE>` (the issue type used under an epic), `<TEAM_FIELD_ID>` + `<TEAM_ID>`, `<START_DATE_FIELD_ID>`. Ask Claude via the MCP for the custom-field ids (`getJiraIssueTypeMetaWithFields`). Leave them unset and the placeholders simply stay visible — only `/data-request` stops working.
 
 > Tip: a single find-and-replace across the copied files for each placeholder is fastest.
 

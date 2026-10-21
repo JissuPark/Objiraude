@@ -31,6 +31,12 @@ $map = [ordered]@{
     '<SUBTASK_TYPE>'              = $cfg.SUBTASK_TYPE
     '<CONFLUENCE_PERSONAL_SPACE>' = $cfg.CONFLUENCE_PERSONAL_SPACE
     '<CONFLUENCE_TEAM_SPACE>'     = $cfg.CONFLUENCE_TEAM_SPACE
+    # data-request only
+    '<SUPPORT_EPIC>'              = $cfg.SUPPORT_EPIC
+    '<TASK_TYPE>'                 = $cfg.TASK_TYPE
+    '<TEAM_FIELD_ID>'             = $cfg.TEAM_FIELD_ID
+    '<TEAM_ID>'                   = $cfg.TEAM_ID
+    '<START_DATE_FIELD_ID>'       = $cfg.START_DATE_FIELD_ID
 }
 
 foreach ($k in '<VAULT_PATH>','<PROJECT_KEY>','<ATLASSIAN_CLOUD_ID>','<YOUR_ATLASSIAN_ACCOUNT_ID>','<SUBTASK_TYPE>') {
@@ -41,7 +47,13 @@ $utf8NoBom = New-Object System.Text.UTF8Encoding($false)
 function Read-Text([string]$p)               { [System.IO.File]::ReadAllText($p) }
 function Write-Text([string]$p, [string]$t)  { [System.IO.File]::WriteAllText($p, $t, $utf8NoBom) }
 function Expand-Placeholders([string]$text) {
-    foreach ($token in $map.Keys) { $text = $text.Replace([string]$token, [string]$map[$token]) }
+    # Skip tokens with no value: a config written before a placeholder existed must leave it
+    # visible in the installed file rather than silently replacing it with an empty string.
+    foreach ($token in $map.Keys) {
+        $value = [string]$map[$token]
+        if ([string]::IsNullOrWhiteSpace($value)) { continue }
+        $text = $text.Replace([string]$token, $value)
+    }
     return $text
 }
 
